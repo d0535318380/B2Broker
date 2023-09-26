@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2Broker.Core", "B2Broker.Core\B2Broker.Core.csproj", "{F08397D7-E5D5-4D21-8933-CDFE8531689B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2Broker.Core.Tests", "B2Broker.Core.Tests\B2Broker.Core.Tests.csproj", "{952C9F0F-85F9-4BA8-BD96-611463F2A494}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F08397D7-E5D5-4D21-8933-CDFE8531689B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F08397D7-E5D5-4D21-8933-CDFE8531689B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F08397D7-E5D5-4D21-8933-CDFE8531689B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F08397D7-E5D5-4D21-8933-CDFE8531689B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{952C9F0F-85F9-4BA8-BD96-611463F2A494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{952C9F0F-85F9-4BA8-BD96-611463F2A494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{952C9F0F-85F9-4BA8-BD96-611463F2A494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{952C9F0F-85F9-4BA8-BD96-611463F2A494}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
