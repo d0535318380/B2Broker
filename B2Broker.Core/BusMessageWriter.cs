@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Microsoft.IO;
 
 namespace B2Broker.Core;
 
@@ -6,52 +7,49 @@ public class BusMessageWriter : IBusMessageWriter
 {
     private readonly BusMessageWriterOption _option;
     private readonly IBusConnection _connection;
-    private readonly ConcurrentQueue<BusMessageRequest> _queue = new();
     
-    private int _currentSize = 0;
+    private readonly ConcurrentQueue<BusMessageRequest> _queue = new();
+    private readonly RecyclableMemoryStreamManager _streamManager = new();
+    private int _currentSize;
 
-
-    public BusMessageWriter(IBusConnection connection) :
-        this(BusMessageWriterOption.Default, connection)
+    public BusMessageWriter(IBusConnection connection, BusMessageWriterOption? option = default)
     {
-        _connection = connection;
-    }
-
-    public BusMessageWriter(BusMessageWriterOption option, IBusConnection connection)
-    {
-        _option = option;
-        _connection = connection;
+        _option ??= BusMessageWriterOption.Default;
+        _connection = connection ?? throw new ArgumentNullException(nameof(connection));
     }
 
     public async Task SendMessageAsync(BusMessageRequest request, CancellationToken token = default)
     {
-        ArgumentNullException.ThrowIfNull(request);
-        
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
+
         var currentSize = Interlocked.Add(ref _currentSize, request.Length);
 
         _queue.Enqueue(request);
-
-        if (currentSize <= _option.BufferSize)
+        
+        if (currentSize > _option.BufferSize)
         {
-            return;
+            await FlushAsync(token);
         }
-
-        await FlushAsync(token);
     }
 
     private async Task FlushAsync(CancellationToken token)
     {
-        var size = 0;
-        using var stream = new MemoryStream();
+        using var stream = _streamManager.GetStream();
+        
+        Interlocked.Exchange(ref _currentSize, 0);
 
-        while (_queue.TryDequeue(out var item)
-               && size <= _option.BufferSize)
+        while (_queue.TryDequeue(out var item))
         {
+            var currentSize = Interlocked.Add(ref _currentSize, -item.Length);
+            
             await stream.WriteAsync(item.Message, token);
-            size += item.Length;
+            
+            if (currentSize <= _option.BufferSize)
+            {
+                break;
+            }
         }
 
-        Interlocked.Exchange(ref _currentSize, 0);
         await _connection.PublishAsync(stream.ToArray(), token);
     }
 }

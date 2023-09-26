@@ -4,14 +4,10 @@ public class BusMessageRequest
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public int Length => Message.Length;
-    public byte[] Message { get; set; } = Array.Empty<byte>();
+    public byte[] Message { get; set; }
 
-    public BusMessageRequest()
+    public BusMessageRequest(byte[]? message = default)
     {
-    }
-
-    public BusMessageRequest(byte[] message)
-    {
-        Message = message;
+        Message = message ?? Array.Empty<byte>();
     }
 }
