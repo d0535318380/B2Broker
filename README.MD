@@ -10,19 +10,20 @@
 > Parallel execution, on the other hand, uses multiple threads to perform multiple tasks simultaneously. Each thread executes a separate task, and the tasks are coordinated to ensure that they do not interfere with each other.
 
 ### 3. Are there any nuances or issues arising from the use of ThreadPool, TPL and async/await that you can describe based on your experience?
->
+> Synchronize threads and access to shared data. 
 
 ### 4. Which approaches do you know to signal about an occurred event to another thread? Can you elaborate on their differences and specifics?
->
+> ManualResetEvent and AutoResetEvent, Semaphore, TaskCompletionSource
 
 ### 5. Can you describe your experience with applying common design and development principles and patterns? 
->
+> WTF?
 
 ### 6. Which of them do you find most useful? 
->
+> Principes - TDD, SOLID, DRY, KISS 
+> Patterns - DI, IoC, Factory, Command/Query segregation, Mediator
 
 ### 7. Which tasks did you solve by following them and why did you choose them?
->
+> WTF?
 
 ### 8. Can you list the mechanisms used to implement Dependency Injection and compare them in detail, with some examples from your own experience?
 - Constructor Injection: This is the most common form of DI, where dependencies are injected through a class constructor.

@@ -3,6 +3,9 @@ using Microsoft.IO;
 
 namespace B2Broker.Core;
 
+
+
+
 public class BusMessageWriter : IBusMessageWriter
 {
     private readonly BusMessageWriterOption _option;
@@ -40,11 +43,9 @@ public class BusMessageWriter : IBusMessageWriter
 
         while (_queue.TryDequeue(out var item))
         {
-            var currentSize = Interlocked.Add(ref _currentSize, -item.Length);
-            
             await stream.WriteAsync(item.Message, token);
             
-            if (currentSize <= _option.BufferSize)
+            if (stream.Length > _option.BufferSize)
             {
                 break;
             }
